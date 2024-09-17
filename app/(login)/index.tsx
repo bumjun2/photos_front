@@ -1,8 +1,10 @@
 import { Link } from 'expo-router';
 import { useEffect, useRef } from 'react';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import {
   Animated,
   Button,
+  Image,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -33,6 +35,7 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.cornerFold} />
       <View style={styles.header}>
         <Animated.Text
           style={[styles.title, { transform: [{ rotate: rotateInterpolate }] }]}
@@ -70,8 +73,23 @@ export default function LoginScreen() {
         activeOpacity={0.8} // 반짝이는 정도
         style={styles.button}
       >
-        <Text> Login </Text>
+        <Text style={styles.buttonText}> Login </Text>
       </TouchableOpacity>
+      <View style={styles.iconeContainer}>
+        <Image
+          source={require('../../assets/images/kakao.png')}
+          style={styles.icon}
+        />
+        <AntDesign
+          name="google"
+          size={24}
+          style={styles.icon}
+        />
+        <Text>그냥</Text>
+      </View>
+      <View style={styles.bottomEnd}>
+        <Text style={styles.bottomText}>인생네컷을 즐기자!</Text>
+      </View>
     </SafeAreaView>
   );
 }
@@ -82,8 +100,46 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f5f5f5',
     justifyContent: 'center',
+    marginTop: 100,
+    marginBottom: 50,
+    marginLeft: 10,
+    marginRight: 10,
+    borderWidth: 3,
+    borderColor: '#000',
+    borderTopRightRadius: 50,
     padding: 20,
+    position: 'relative',
   },
+
+  cornerFold: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 40,
+    height: 40,
+    backgroundColor: '#f5f5f5', // 배경과 동일한 색상
+    borderBottomWidth: 2,
+    borderRightWidth: 2,
+    borderBottomColor: '#ddd', // 접힌 부분의 테두리 색상
+    borderRightColor: '#ddd', // 접힌 부분의 테두리 색상
+    borderTopRightRadius: 10, // 원래 이미지의 borderRadius와 일치
+    transform: [
+      { rotate: '45deg' }, // 모서리를 45도 회전
+    ],
+  },
+  bottomEnd: {
+    position: 'absolute',
+    height: 50,
+    width: '100%',
+    backgroundColor: '#000',
+    bottom: 0,
+  },
+  bottomText: {
+    color: '#fff',
+    marginTop: 10,
+    left: 10,
+  },
+
   header: {
     marginBottom: 30,
     alignItems: 'center',
@@ -124,5 +180,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
+    margin: 20,
+    padding: 20,
+    backgroundColor: '#000',
+    borderRadius: 20,
+  },
+
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+
+  iconeContainer: {
+    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  icon: {
+    width: 24,
+    height: 24,
   },
 });

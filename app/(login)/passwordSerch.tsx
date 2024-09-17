@@ -8,11 +8,10 @@ export default function PassWordSerchScreen() {
       <Stack.Screen
         options={{
           headerShown: true,
-          title: 'forgetPassword',
-          headerBackTitle: param.name,
+          title: 'Forget Password',
+          headerBackTitle: '로그인',
         }}
       />
-      <Text></Text>
     </SafeAreaView>
   );
 }
