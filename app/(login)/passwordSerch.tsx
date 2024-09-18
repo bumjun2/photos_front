@@ -12,6 +12,7 @@ export default function PassWordSerchScreen() {
           headerBackTitle: '로그인',
         }}
       />
+      <View></View>
     </SafeAreaView>
   );
 }

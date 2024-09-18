@@ -67,7 +67,9 @@ export default function LoginScreen() {
         }}
         style={styles.passwordContainer}
       >
-        <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+        <Text style={styles.forgotPasswordText}>
+          비밀번호를 잊어버리셨나요?
+        </Text>
       </Link>
       <TouchableOpacity
         activeOpacity={0.8} // 반짝이는 정도
@@ -75,6 +77,7 @@ export default function LoginScreen() {
       >
         <Text style={styles.buttonText}> Login </Text>
       </TouchableOpacity>
+
       <View style={styles.iconeContainer}>
         <Image
           source={require('../../assets/images/kakao.png')}
@@ -85,10 +88,20 @@ export default function LoginScreen() {
           size={24}
           style={styles.icon}
         />
-        <Text>그냥</Text>
+      </View>
+      <View style={styles.newUser}>
+        <Text>계정이 없으신가요?</Text>
+        <Link
+          href={{
+            pathname: '/newUser',
+          }}
+          style={styles.newUserText}
+        >
+          가입하기
+        </Link>
       </View>
       <View style={styles.bottomEnd}>
-        <Text style={styles.bottomText}>인생네컷을 즐기자!</Text>
+        <Text style={styles.bottomText}>MY LIFE IS ...</Text>
       </View>
     </SafeAreaView>
   );
@@ -200,5 +213,15 @@ const styles = StyleSheet.create({
   icon: {
     width: 24,
     height: 24,
+  },
+  newUser: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 30,
+  },
+  newUserText: {
+    color: '#007bff',
+    marginLeft: 5,
   },
 });

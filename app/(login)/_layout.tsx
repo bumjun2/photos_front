@@ -10,6 +10,7 @@ export default function LoginLayout() {
     >
       <Stack.Screen name="index" />
       <Stack.Screen name="passwordSerch" />
+      <Stack.Screen name="newUser" />
     </Stack>
   );
 }
