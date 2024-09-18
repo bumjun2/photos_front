@@ -249,16 +249,7 @@ export default function newUserScreen() {
           />
           <Text>이메일 전송 중...</Text>
         </View>
-      ) : (
-        <TouchableOpacity
-          style={styles.authNumberSend}
-          onPress={sendEmail}
-        >
-          <Text>인증번호 발송</Text>
-        </TouchableOpacity>
-      )}
-
-      {flag ? (
+      ) : flag ? (
         <View style={styles.form}>
           <TextInput
             style={styles.input}
@@ -268,8 +259,14 @@ export default function newUserScreen() {
           />
         </View>
       ) : (
-        <View></View>
+        <TouchableOpacity
+          style={styles.authNumberSend}
+          onPress={sendEmail}
+        >
+          <Text>인증번호 발송</Text>
+        </TouchableOpacity>
       )}
+
       <View style={styles.status}>
         <Text style={account[3] ? styles.true : styles.false}>
           {emailCodeState}

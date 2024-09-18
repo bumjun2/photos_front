@@ -60,16 +60,14 @@ export default function LoginScreen() {
       </View>
       <Link
         href={{
-          pathname: '/passwordSerch',
+          pathname: '/(tabs)',
           params: {
             name: '로그인',
           },
         }}
         style={styles.passwordContainer}
       >
-        <Text style={styles.forgotPasswordText}>
-          비밀번호를 잊어버리셨나요?
-        </Text>
+        <Text style={styles.forgotPasswordText}>아이디 · 비밀번호 찾기</Text>
       </Link>
       <TouchableOpacity
         activeOpacity={0.8} // 반짝이는 정도
@@ -78,17 +76,6 @@ export default function LoginScreen() {
         <Text style={styles.buttonText}> Login </Text>
       </TouchableOpacity>
 
-      <View style={styles.iconeContainer}>
-        <Image
-          source={require('../../assets/images/kakao.png')}
-          style={styles.icon}
-        />
-        <AntDesign
-          name="google"
-          size={24}
-          style={styles.icon}
-        />
-      </View>
       <View style={styles.newUser}>
         <Text>계정이 없으신가요?</Text>
         <Link

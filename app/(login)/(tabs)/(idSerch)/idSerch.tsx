@@ -1,14 +1,14 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView, Text, View } from 'react-native';
 
-export default function PassWordSerchScreen() {
+export default function idSerchScreen() {
   const param = useLocalSearchParams();
   return (
     <SafeAreaView>
       <Stack.Screen
         options={{
           headerShown: true,
-          title: 'Forget Password',
+          title: '',
           headerBackTitle: '로그인',
         }}
       />
