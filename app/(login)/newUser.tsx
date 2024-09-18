@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
   Alert,
   Image,
   Linking,
@@ -15,7 +16,7 @@ import Mailer from 'react-native-mail';
 
 export default function newUserScreen() {
   // 입력값 확인
-  const [account, setAccount] = useState([false, false, false, false, false]);
+  const [account, setAccount] = useState([false, false, false, false]);
 
   // Username 값
   const [username, setUsername] = useState('');
@@ -28,6 +29,20 @@ export default function newUserScreen() {
   //password Retry 값
   const [passwordRetry, setPasswordRetry] = useState('');
   const [passwordRetryState, setPasswordRetryState] = useState('');
+
+  // 인증번호 발송 클릭시 input창 띄우기
+  const [flag, setFlag] = useState(false);
+
+  // email 값
+  const [email, setEmail] = useState('');
+  const [emailCodeState, setEmailCodeState] = useState('');
+
+  // 인증 값
+  const [authcode, setAuthCode] = useState(''); // 입력한 코드값
+  const [code, setCode] = useState(''); // 이메일로 보낼 핸덤한 코드값
+
+  // 로딩화면
+  const [lodding, setLodding] = useState(false);
 
   // 아이디 값을 입력할 때 값
   useEffect(() => {
@@ -91,16 +106,18 @@ export default function newUserScreen() {
     }
   }, [passwordRetry]);
 
-  // 인증번호 발송 클릭시 input창 띄우기
-  const [flag, setFlag] = useState(false);
-  const [email, setEmail] = useState('');
-
   // 이메일 발송
   const sendEmail = () => {
+    setLodding(true);
+    // 랜덤한 코드값 생성
+    const code = generateAuthCode();
+
+    setCode(code);
+
     const param = {
       to: email, // 이메일 주소
       subject: 'MY LIFE IS 비밀번호 인증코드', // 이메일 발송 제목
-      setText: '#56!@', // 이메일 발송내용
+      setText: code, // 이메일 발송내용
     };
 
     fetch('http://localhost:8183/login/send-email', {
@@ -113,20 +130,58 @@ export default function newUserScreen() {
       if (response.ok) {
         // 이메일에 맞게 잘 전송 될 경우
         setFlag(true);
-        Alert.alert('이메일이 발송되었습니다.');
+
+        new Promise((resolve) => setTimeout(resolve, 7000))
+          .then(() => {
+            Alert.alert('이메일이 발송되었습니다.');
+          })
+          .finally(() => {
+            setLodding(false);
+          });
+
         return response.json;
       } else {
         // 그렇지 않을경우
         Alert.alert('이메일을 다시 확인해 주세요');
+        setLodding(false);
       }
     });
   };
+
+  useEffect(() => {
+    account[3] = false;
+    setAccount([...account]);
+    if (authcode == '') {
+      setEmailCodeState('');
+    } else if (code != authcode) {
+      setEmailCodeState('인증코드를 다시 확인해 주세요.');
+    } else {
+      setEmailCodeState('인증코드가 일치합니다.');
+      trueIndex(3);
+    }
+  }, [authcode]);
 
   // input 값 확인
   const trueIndex = (index) => {
     account[index] = true;
     setAccount([...account]);
   };
+
+  // 랜덤한 이메일 인증 코드값
+  const generateAuthCode = () => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let authCode = '';
+
+    for (let i = 0; i < 5; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      authCode += characters[randomIndex];
+    }
+
+    return authCode;
+  };
+
+  // 모든 상태가 true인지 확인
+  const allValid = account.every((status) => status === true);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -186,23 +241,44 @@ export default function newUserScreen() {
           onChangeText={setEmail}
         />
       </View>
-      <TouchableOpacity
-        style={styles.authNumberSend}
-        onPress={sendEmail}
-      >
-        <Text>인증번호 발송</Text>
-      </TouchableOpacity>
+      {lodding ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator
+            size="large"
+            color="#0000ff"
+          />
+          <Text>이메일 전송 중...</Text>
+        </View>
+      ) : (
+        <TouchableOpacity
+          style={styles.authNumberSend}
+          onPress={sendEmail}
+        >
+          <Text>인증번호 발송</Text>
+        </TouchableOpacity>
+      )}
+
       {flag ? (
         <View style={styles.form}>
           <TextInput
             style={styles.input}
             placeholder="인증번호"
             placeholderTextColor="#888"
-            secureTextEntry
+            onChangeText={setAuthCode}
           />
         </View>
       ) : (
         <View></View>
+      )}
+      <View style={styles.status}>
+        <Text style={account[3] ? styles.true : styles.false}>
+          {emailCodeState}
+        </Text>
+      </View>
+      {allValid && (
+        <TouchableOpacity style={styles.signupButton}>
+          <Text>회원가입</Text>
+        </TouchableOpacity>
       )}
     </SafeAreaView>
   );
@@ -245,5 +321,17 @@ const styles = StyleSheet.create({
   },
   false: {
     color: 'red',
+  },
+  loadingContainer: {
+    alignItems: 'center',
+  },
+
+  signupButton: {
+    margin: 15,
+    padding: 10,
+    backgroundColor: '#ddd',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
