@@ -12,7 +12,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Mailer from 'react-native-mail';
 
 export default function newUserScreen() {
   // 입력값 확인

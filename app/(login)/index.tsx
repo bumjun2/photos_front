@@ -60,7 +60,7 @@ export default function LoginScreen() {
       </View>
       <Link
         href={{
-          pathname: '/(tabs)',
+          pathname: '/',
           params: {
             name: '로그인',
           },
