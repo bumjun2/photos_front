@@ -1,7 +1,8 @@
-import { Link } from 'expo-router';
-import { useEffect, useRef } from 'react';
+import { Link, router, useNavigation } from 'expo-router';
+import { useEffect, useRef, useState } from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import {
+  Alert,
   Animated,
   Button,
   Image,
@@ -12,10 +13,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import RootLayout from '../(tabs)/(home)/_layout';
 
 export default function LoginScreen() {
   // 타이틀 Login 애니메이션
   const rotatoValue = useRef(new Animated.Value(0)).current;
+
+  //아이디 비번 입력값
+  const [idInput, setIdInput] = useState('');
+  const [pwInput, setPwInput] = useState('');
+
+  const navigation = useNavigation();
 
   // 타이틀 Login 애니메이션 적용
   useEffect(() => {
@@ -33,6 +41,18 @@ export default function LoginScreen() {
     outputRange: ['0deg', '360deg'],
   });
 
+  function headlerLogin() {
+    // 임시 아이디 비번
+    const id = 'jbj3713';
+    const pw = 'wjdqjawns12#';
+
+    if (idInput === id && pwInput === pw) {
+      router.replace('/(home)');
+    } else {
+      Alert.alert('로그인 실패');
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.cornerFold} />
@@ -48,6 +68,7 @@ export default function LoginScreen() {
           style={styles.input}
           placeholder="Username"
           placeholderTextColor="#888"
+          onChangeText={setIdInput}
         />
       </View>
       <View style={styles.form}>
@@ -56,6 +77,7 @@ export default function LoginScreen() {
           placeholder="Password"
           placeholderTextColor="#888"
           secureTextEntry
+          onChangeText={setPwInput}
         />
       </View>
       <Link
@@ -72,6 +94,7 @@ export default function LoginScreen() {
       <TouchableOpacity
         activeOpacity={0.8} // 반짝이는 정도
         style={styles.button}
+        onPress={headlerLogin}
       >
         <Text style={styles.buttonText}> Login </Text>
       </TouchableOpacity>

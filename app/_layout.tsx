@@ -30,6 +30,8 @@ export default function RootLayout() {
     return null;
   }
 
+  function login() {}
+
   return (
     <Stack
       screenOptions={{
