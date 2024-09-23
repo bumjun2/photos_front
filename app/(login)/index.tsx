@@ -43,8 +43,8 @@ export default function LoginScreen() {
 
   function headlerLogin() {
     // 임시 아이디 비번
-    const id = 'jbj3713';
-    const pw = 'wjdqjawns12#';
+    const id = '1';
+    const pw = '1';
 
     if (idInput === id && pwInput === pw) {
       router.replace('/(home)');
